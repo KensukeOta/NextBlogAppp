@@ -1,7 +1,9 @@
 import type { NextPage } from "next";
 import type { User } from "../types/User";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { axios } from "../lib/axios";
 import { Layout } from "../components/templates/Layout";
 import { NameArea } from "../components/molecules/NameArea";
 import { EmailArea } from "../components/molecules/EmailArea";
@@ -10,6 +12,8 @@ import { PasswordConfirmArea } from "../components/molecules/PasswordConfirmArea
 import { SubmitButton } from "../components/atoms/SubmitButton";
 
 const Signup: NextPage = () => {
+  const router = useRouter();
+  
   const {
     register,
     handleSubmit,
@@ -26,7 +30,8 @@ const Signup: NextPage = () => {
 
   const onSubmit: SubmitHandler<User> = async (data) => {
     try {
-      console.log(data);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/create`, { name: data.name, email: data.email, password: data.password, password_confirmation: data.password_confirmation });
+      router.replace("/");
     } catch (error) {
       console.log(error);
     }
