@@ -9,6 +9,7 @@ const Home: NextPage = () => {
         <meta name="description" content="BlogApp for Next.js" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <h1 className="font-bold">トップページ</h1>
     </div>
   );
 };
