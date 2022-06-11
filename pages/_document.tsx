@@ -5,7 +5,7 @@ const Document: NextPage = () => {
   return (
     <Html lang="ja">
       <Head />
-      <body>
+      <body className="min-h-screen	">
         <Main />
         <NextScript />
       </body>
