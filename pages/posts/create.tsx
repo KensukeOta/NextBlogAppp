@@ -12,6 +12,7 @@ import { Layout } from "../../components/templates/Layout";
 import { TitleArea } from "../../components/molecules/TitleArea";
 import { PostArea } from "../../components/molecules/PostArea";
 import { SubmitButton } from "../../components/atoms/SubmitButton";
+import Head from "next/head";
 
 const PostCreate: NextPage = () => {
   const authUser = useRecoilValue<User>(authUserState);
@@ -47,6 +48,10 @@ const PostCreate: NextPage = () => {
   
   return (
     <Layout>
+      <Head>
+        <title>記事投稿フォーム - NextBlogApp</title>
+      </Head>
+
       <h1 className="font-bold">記事投稿フォーム</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
