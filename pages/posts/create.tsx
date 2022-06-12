@@ -2,7 +2,9 @@ import type { NextPage } from "next";
 import type { User } from "../../types/User";
 import type { Post } from "../../types/Post";
 import type { SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { axios } from "../../lib/axios";
 import { useRecoilValue } from "recoil";
 import { authUserState } from "../../stores/authUserState";
 import { Layout } from "../../components/templates/Layout";
@@ -13,6 +15,8 @@ import { SubmitButton } from "../../components/atoms/SubmitButton";
 const PostCreate: NextPage = () => {
   const authUser = useRecoilValue<User>(authUserState);
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -21,13 +25,14 @@ const PostCreate: NextPage = () => {
     defaultValues: {
       title: "",
       body: "",
-      user_id: `${authUser.id}`,
+      user_id: authUser.id
     }
   });
 
   const onSubmit: SubmitHandler<Post> = async (data) => {
     try {
-      console.log(data);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/create`, { title: data.title, body: data.body, user_id: data.user_id });
+      router.replace("/");
     } catch (error) {
       console.log(error);
     }
