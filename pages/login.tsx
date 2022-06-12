@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
 import type { User } from "../types/User";
+import type { SubmitHandler } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { axios } from "../lib/axios";
 import { useRecoilState } from "recoil";
 import { authUserState } from "../stores/authUserState";
@@ -10,12 +12,11 @@ import { Layout } from "../components/templates/Layout";
 import { EmailArea } from "../components/molecules/EmailArea";
 import { PasswordArea } from "../components/molecules/PasswordArea";
 import { SubmitButton } from "../components/atoms/SubmitButton";
-import { useState } from "react";
 
 const Login: NextPage = () => {
   const [error, setError] = useState("");
   
-  const [authUser, setAuthUser] = useRecoilState(authUserState);
+  const [authUser, setAuthUser] = useRecoilState<User>(authUserState);
   
   const router = useRouter();
 

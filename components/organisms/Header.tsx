@@ -1,12 +1,19 @@
 import type { FC } from "react";
 import type { User } from "../../types/User";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { authUserState } from "../../stores/authUserState";
 import { LogoutButton } from "../atoms/LogoutButton";
 
 export const Header: FC = () => {
+  const [user, setUser] = useState<User>();
+  
   const authUser = useRecoilValue<User>(authUserState);
+
+  useEffect(() => {
+    setUser(authUser);
+  }, []);
   
   return (
     <header className="flex justify-between border-b">
@@ -17,7 +24,7 @@ export const Header: FC = () => {
       </Link>
 
       <nav>
-        {!authUser && (
+        {!user && (
           <>
             <Link href="/signup">
               <a>新規登録</a>
@@ -28,7 +35,7 @@ export const Header: FC = () => {
             </Link>
           </>
         )}
-        {authUser && <LogoutButton />}
+        {user && <LogoutButton />}
       </nav>
     </header>
   );
