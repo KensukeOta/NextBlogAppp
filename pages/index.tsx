@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next'
+import type { PostProps } from '../types/PostProps';
 import type { User } from '../types/User';
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
@@ -7,7 +8,6 @@ import { useRecoilValue } from 'recoil';
 import { authUserState } from '../stores/authUserState';
 import { Layout } from '../components/templates/Layout'
 import { PostCreateLink } from '../components/atoms/PostCreateLink';
-import { PostProps } from '../types/PostProps';
 import { PostItem } from '../components/organisms/PostItem';
 
 export const getServerSideProps: GetServerSideProps = async () => {
