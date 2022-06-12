@@ -3,7 +3,7 @@ import type { User } from "../types/User";
 import type { SubmitHandler } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { axios } from "../lib/axios";
 import { useRecoilState } from "recoil";
@@ -19,6 +19,12 @@ const Login: NextPage = () => {
   const [authUser, setAuthUser] = useRecoilState<User>(authUserState);
   
   const router = useRouter();
+
+  useEffect(() => {
+    if (authUser) {
+      router.replace("/");
+    }
+  }, []);
 
   const {
     register,
