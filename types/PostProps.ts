@@ -1,5 +1,6 @@
 import type { Post } from "./Post";
 
 export interface PostProps {
-  posts: Post[]
+  posts?: Post[];
+  post?: Post;
 };

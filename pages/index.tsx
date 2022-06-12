@@ -8,6 +8,7 @@ import { authUserState } from '../stores/authUserState';
 import { Layout } from '../components/templates/Layout'
 import { PostCreateLink } from '../components/atoms/PostCreateLink';
 import { PostProps } from '../types/PostProps';
+import { PostItem } from '../components/organisms/PostItem';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
@@ -43,6 +44,12 @@ const Home: NextPage<PostProps> = ({ posts }) => {
       <nav className="text-center">
         <PostCreateLink />
       </nav>
+
+      <ul>
+        {posts!.map((post) => (
+          <PostItem key={post.id} post={post} />
+        ))}
+      </ul>
     </Layout>
   );
 };
