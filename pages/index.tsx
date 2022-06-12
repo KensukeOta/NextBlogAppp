@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { authUserState } from '../stores/authUserState';
 import { Layout } from '../components/templates/Layout'
+import { PostCreateLink } from '../components/atoms/PostCreateLink';
 
 const Home: NextPage = () => {
   const [user, setUser] = useState<User>();
@@ -25,6 +26,10 @@ const Home: NextPage = () => {
       
       <h1 className="font-bold">トップページ</h1>
       <p>Welcome! {user ? authUser.name : "stranger"}</p>
+
+      <nav className="text-center">
+        <PostCreateLink />
+      </nav>
     </Layout>
   );
 };
