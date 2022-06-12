@@ -23,7 +23,7 @@ const PostContent: NextPage<PostProps> = ({ post }) => {
       </Head>
 
       <h1 className="font-bold">{post!.title}</h1>
-      <p>{post!.body}</p>
+      <p className="whitespace-pre-line">{post!.body}</p>
     </Layout>
   );
 };
