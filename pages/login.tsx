@@ -1,13 +1,24 @@
 import type { NextPage } from "next";
 import type { User } from "../types/User";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { axios } from "../lib/axios";
+import { useRecoilState } from "recoil";
+import { authUserState } from "../stores/authUserState";
 import { Layout } from "../components/templates/Layout";
 import { EmailArea } from "../components/molecules/EmailArea";
 import { PasswordArea } from "../components/molecules/PasswordArea";
 import { SubmitButton } from "../components/atoms/SubmitButton";
+import { useState } from "react";
 
 const Login: NextPage = () => {
+  const [error, setError] = useState("");
+  
+  const [authUser, setAuthUser] = useRecoilState(authUserState);
+  
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -21,7 +32,13 @@ const Login: NextPage = () => {
 
   const onSubmit: SubmitHandler<User> = async (data) => {
     try {
-      console.log(data);
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, { email: data.email, password: data.password });
+      if (res.data.id) {
+        router.replace("/");
+        setAuthUser(res.data);
+      } else {
+        setError(res.data.message);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -36,6 +53,7 @@ const Login: NextPage = () => {
       <h1 className="font-bold">ログインフォーム</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <p className="text-red-500">{error}</p>
         <dl>
           <EmailArea register={register} />
           <p className="text-red-500">{errors.email?.message}</p>

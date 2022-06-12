@@ -1,8 +1,13 @@
 import type { NextPage } from 'next'
+import type { User } from '../types/User';
 import Head from 'next/head'
+import { useRecoilValue } from 'recoil';
+import { authUserState } from '../stores/authUserState';
 import { Layout } from '../components/templates/Layout'
 
 const Home: NextPage = () => {
+  const authUser = useRecoilValue<User>(authUserState);
+  
   return (
     <Layout>
       <Head>
@@ -12,6 +17,7 @@ const Home: NextPage = () => {
       </Head>
       
       <h1 className="font-bold">トップページ</h1>
+      <p>Welcome! {authUser ? authUser.name : "stranger"}</p>
     </Layout>
   );
 };
