@@ -3,6 +3,7 @@ import type { User } from "../../types/User";
 import type { Post } from "../../types/Post";
 import type { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { axios } from "../../lib/axios";
 import { useRecoilValue } from "recoil";
@@ -16,6 +17,12 @@ const PostCreate: NextPage = () => {
   const authUser = useRecoilValue<User>(authUserState);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (!authUser) {
+      router.replace("/login");
+    }
+  }, []);
 
   const {
     register,
