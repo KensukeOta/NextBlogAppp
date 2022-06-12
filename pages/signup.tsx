@@ -1,9 +1,12 @@
 import type { NextPage } from "next";
 import type { User } from "../types/User";
+import type { SubmitHandler } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { axios } from "../lib/axios";
+import { useRecoilState } from "recoil";
+import { authUserState } from "../stores/authUserState";
 import { Layout } from "../components/templates/Layout";
 import { NameArea } from "../components/molecules/NameArea";
 import { EmailArea } from "../components/molecules/EmailArea";
@@ -12,6 +15,8 @@ import { PasswordConfirmArea } from "../components/molecules/PasswordConfirmArea
 import { SubmitButton } from "../components/atoms/SubmitButton";
 
 const Signup: NextPage = () => {
+  const [authUser, setAuthUser] = useRecoilState<User>(authUserState);
+  
   const router = useRouter();
   
   const {
@@ -31,7 +36,9 @@ const Signup: NextPage = () => {
   const onSubmit: SubmitHandler<User> = async (data) => {
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/create`, { name: data.name, email: data.email, password: data.password, password_confirmation: data.password_confirmation });
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, { email: data.email, password: data.password });
       router.replace("/");
+      setAuthUser(res.data);
     } catch (error) {
       console.log(error);
     }
