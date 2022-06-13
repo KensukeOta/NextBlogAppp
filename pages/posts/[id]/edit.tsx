@@ -31,6 +31,12 @@ const PostEdit: NextPage<PostProps> = ({ post }) => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    if (!authUser || authUser.id !== post!.user_id) {
+      router.replace("/");
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
