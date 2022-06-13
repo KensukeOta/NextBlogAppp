@@ -1,29 +1,22 @@
 import type { NextPage } from "next";
-import type { User } from "../../types/User";
-import type { Post } from "../../types/Post";
 import type { SubmitHandler } from "react-hook-form";
+import type { User } from "../../../types/User";
+import type { Post } from "../../../types/Post";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { axios } from "../../lib/axios";
 import { useRecoilValue } from "recoil";
-import { authUserState } from "../../stores/authUserState";
-import { Layout } from "../../components/templates/Layout";
-import { TitleArea } from "../../components/molecules/TitleArea";
-import { PostArea } from "../../components/molecules/PostArea";
-import { SubmitButton } from "../../components/atoms/SubmitButton";
+import { authUserState } from "../../../stores/authUserState";
+import { TitleArea } from "../../../components/molecules/TitleArea";
+import { PostArea } from "../../../components/molecules/PostArea";
+import { SubmitButton } from "../../../components/atoms/SubmitButton";
+import { Layout } from "../../../components/templates/Layout";
 
-const PostCreate: NextPage = () => {
+const PostEdit: NextPage = () => {
   const authUser = useRecoilValue<User>(authUserState);
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (!authUser) {
-      router.replace("/login");
-    }
-  }, []);
 
   const {
     register,
@@ -39,8 +32,7 @@ const PostCreate: NextPage = () => {
 
   const onSubmit: SubmitHandler<Post> = async (data) => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/create`, { title: data.title, body: data.body, user_id: data.user_id });
-      router.replace("/");
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -49,10 +41,10 @@ const PostCreate: NextPage = () => {
   return (
     <Layout>
       <Head>
-        <title>記事投稿フォーム - NextBlogApp</title>
+        <title>記事更新フォーム - NextBlogApp</title>
       </Head>
 
-      <h1 className="font-bold">記事投稿フォーム</h1>
+      <h1 className="font-bold">記事更新フォーム</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <dl>
@@ -60,11 +52,11 @@ const PostCreate: NextPage = () => {
           <p className="text-red-500">{errors.title?.message}</p>
           <PostArea register={register} />
           <p className="text-red-500">{errors.body?.message}</p>
-          <SubmitButton>投稿する</SubmitButton>
+          <SubmitButton>更新する</SubmitButton>
         </dl>
       </form>
     </Layout>
   );
 };
 
-export default PostCreate;
+export default PostEdit;
