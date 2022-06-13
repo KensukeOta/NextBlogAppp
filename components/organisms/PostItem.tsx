@@ -2,12 +2,19 @@ import type { FC } from "react";
 import type { PostProps } from "../../types/PostProps";
 import type { User } from "../../types/User";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { authUserState } from "../../stores/authUserState";
 import { PostEditLink } from "../atoms/PostEditLink";
 
 export const PostItem: FC<PostProps> = (props) => {
+  const [user, setUser] = useState<User>();
+  
   const authUser = useRecoilValue<User>(authUserState);
+
+  useEffect(() => {
+    setUser(authUser);
+  }, []);
   
   return (
     <li className="border">
@@ -16,7 +23,7 @@ export const PostItem: FC<PostProps> = (props) => {
       </Link>
       <nav className="flex justify-between">
         <p>by {props.post!.user!.name}</p>
-        {authUser.id === props.post!.user!.id && <PostEditLink id={props.post!.id} />}
+        {user && authUser.id === props.post!.user!.id && <PostEditLink id={props.post!.id} />}
       </nav>
     </li>
   );
