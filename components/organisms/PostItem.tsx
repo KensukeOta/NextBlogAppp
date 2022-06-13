@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { authUserState } from "../../stores/authUserState";
 import { PostEditLink } from "../atoms/PostEditLink";
+import { PostDeleteButton } from "../atoms/PostDeleteButton";
 
 export const PostItem: FC<PostProps> = (props) => {
   const [user, setUser] = useState<User>();
@@ -24,6 +25,7 @@ export const PostItem: FC<PostProps> = (props) => {
       <nav className="flex justify-between">
         <p>by {props.post!.user!.name}</p>
         {user && authUser.id === props.post!.user!.id && <PostEditLink id={props.post!.id} />}
+        {user && authUser.id === props.post!.user!.id && <PostDeleteButton id={props.post!.id} />}
       </nav>
     </li>
   );
