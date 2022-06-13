@@ -4,8 +4,8 @@ import Head from "next/head";
 import { axios } from "../../lib/axios";
 import { Layout } from "../../components/templates/Layout";
 
-export const getServerSideProps: GetServerSideProps = async (params) => {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${params.query.id}`);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${context.params!.id}`);
   const post = res.data;
 
   return {

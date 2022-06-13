@@ -1,11 +1,13 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import type { SubmitHandler } from "react-hook-form";
+import type { PostProps } from "../../../types/PostProps";
 import type { User } from "../../../types/User";
 import type { Post } from "../../../types/Post";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { axios } from "../../../lib/axios";
 import { useRecoilValue } from "recoil";
 import { authUserState } from "../../../stores/authUserState";
 import { TitleArea } from "../../../components/molecules/TitleArea";
@@ -13,7 +15,18 @@ import { PostArea } from "../../../components/molecules/PostArea";
 import { SubmitButton } from "../../../components/atoms/SubmitButton";
 import { Layout } from "../../../components/templates/Layout";
 
-const PostEdit: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${context.params!.id}`);
+  const post = res.data;
+
+  return {
+    props: {
+      post
+    }
+  };
+};
+
+const PostEdit: NextPage<PostProps> = ({ post }) => {
   const authUser = useRecoilValue<User>(authUserState);
 
   const router = useRouter();
@@ -24,15 +37,16 @@ const PostEdit: NextPage = () => {
     formState: { errors },
   } = useForm<Post>({
     defaultValues: {
-      title: "",
-      body: "",
-      user_id: authUser.id
+      title: post!.title,
+      body: post!.body,
+      user_id: post!.user_id,
     }
   });
 
   const onSubmit: SubmitHandler<Post> = async (data) => {
     try {
-      console.log(data);
+      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${post!.id}/update`, { title: data.title, body: data.body, user_id: data.user_id });
+      router.replace("/");
     } catch (error) {
       console.log(error);
     }
